@@ -89,7 +89,7 @@ class OpenAIContentFilter(ContentFilter):
         self.instructions = instructions
         self.model = model
     
-    def get_response(self, prompt: str) -> Response:
+    def get_response(self, prompt: str, **kwargs) -> Response:
         # logger.debug(f"OpenAI model prompt: {prompt}")
         logger.info("Making OpenAI API call.")
         start_time = time.time()
@@ -97,22 +97,25 @@ class OpenAIContentFilter(ContentFilter):
             model=self.model,
             instructions=self.instructions,
             input=prompt,
+            reasoning={
+                "effort": "high",
+            },
+            # max_output_tokens=10000,
+            **kwargs,
         )
         elapsed_time = time.time() - start_time
         logger.info(f"OpenAI API call took {elapsed_time:.2f} seconds")
-        response = self.client.responses.create(
-            model=self.model,
-            instructions=self.instructions,
-            input=prompt,
-        )
         logger.debug(f"OpenAI model response: {response.output_text}")
-        return response.output_text
+        with open('data/llm_output.txt', 'w') as f:
+            f.write(f"Usage: {response.usage}\n\n")
+            f.write(f"Output:\n{response.output_text}")
+        return response
         
 
     def get_filter_keys(self, job_listing: str, content: ResumeContent) -> ContentFilter.FilterIndices:
         candidate = f"Here is the candidate file: \n\n {yaml.dump(content.model_dump(), width=float('inf'), sort_keys=True)}"
         prompt = f"{job_listing} \n {candidate}"
-        llm_response = yaml.safe_load(self.get_response(prompt))
+        llm_response = yaml.safe_load(self.get_response(prompt).output_text)
         return ContentFilter.FilterIndices(experience_filters=llm_response["content"])
 
 

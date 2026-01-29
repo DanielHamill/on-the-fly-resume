@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO, format='%(name)s - %(levelname)s - %(mes
 logger = logging.getLogger(__name__)
 
 # TODO: add path to env variables
-TEMPLATE = os.getenv("TEMPLATE", "template.jinja")
+TEMPLATE = os.getenv("TEMPLATE", "template.tex")
 DATA = os.getenv("DATA", "resume_content.yaml")
 OUTPUT = os.getenv("OUTPUT", "output.tex")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -23,7 +23,11 @@ def get_content_filter():
     # content_filter = None
     with open(Path("data") / Path(INSTRUCTIONS), 'r') as f:
         instructions = f.read()
-    content_filter = OpenAIContentFilter(api_key=OPENAI_API_KEY, instructions=instructions)
+    content_filter = OpenAIContentFilter(
+        api_key=OPENAI_API_KEY, 
+        instructions=instructions,
+        model="gpt-5.2",
+    )
     return content_filter
 
 def get_job_listing():

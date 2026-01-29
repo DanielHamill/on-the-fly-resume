@@ -1,5 +1,5 @@
 [project]
-name = "on_the_fly_resume"
+name = "resume-customizer"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -23,12 +23,12 @@ requires = ["setuptools>=61.0","wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-package-dir = { "" = "on_the_fly_resume" }
+package-dir = { "" = "resume_customizer" }
 
 [tool.setuptools.packages.find]
-where = ["on_the_fly_resume"]
+where = ["resume_customizer"]
 
 [tool.poe.tasks]
-template = "python -m on_the_fly_resume.__main__"
+template = "python -m resume_customizer.__main__"
 render = "pdflatex -output-directory=${RENDER_DIR} ./output/${OUTPUT}"
-generate = { sequence = ["template", "render"], env = { TEMPLATE = "template.jinja", DATA = "resume_content.yaml", OUTPUT = "output.tex", RENDER_DIR = "./render" } }
+generate = { sequence = ["template", "render"], env = { TEMPLATE = "template.tex", DATA = "resume_content.yaml", OUTPUT = "output.tex", RENDER_DIR = "./render" } }
