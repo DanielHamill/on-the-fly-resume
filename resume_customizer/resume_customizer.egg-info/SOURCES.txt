@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-resume_customizer/resume_customizer.egg-info/PKG-INFO
-resume_customizer/resume_customizer.egg-info/SOURCES.txt
-resume_customizer/resume_customizer.egg-info/dependency_links.txt
-resume_customizer/resume_customizer.egg-info/requires.txt
-resume_customizer/resume_customizer.egg-info/top_level.txt
